@@ -1,18 +1,47 @@
-const { fetchMyIP, fetchCoordsByIP } = require('./iss');
+// const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation} = require('./iss');
+const { nextISSTimesForMyLocation } = require('./iss');
 
-fetchMyIP((error, ip) => {
+nextISSTimesForMyLocation((error, passTimes) => {
   if (error) {
-    console.log("It didn't work!" , error);
-    return;
+    return console.log("It didn't work!", error);
   }
-  console.log('It worked! Returned IP:' , ip);
+  // success, print out the deets!
+  console.log(passTimes);
+  printOutTime(passTimes);
 });
 
-fetchCoordsByIP('invalidiphere', (error, data) => {
-  if (error) {
-    console.log("It didn't work! Error:" , error);
-    return;
+const printOutTime = (array) => {
+  for (let time of array) {
+    const dateTime = new Date(0);
+    dateTime.setUTCSeconds(time.risetime);
+    const duration = time.duration;
+    console.log(`Next pass at ${dateTime} for ${duration} seconds!`);
   }
-  console.log('It worked! Returned Coordinate:' , data);
-});
+}
+
+
+// fetchMyIP((error, IP) => {
+//   if (error) {
+//     console.log("It didn't work!" , error);
+//     return;
+//   }
+//   console.log('It worked! Returned IP:' , IP);
+// });
+
+// fetchCoordsByIP(IP, (error, data) => {
+//   if (error) {
+//     console.log("It didn't work! Error:" , error);
+//     return;
+//   }
+//   console.log('It worked! Returned Coordinate:' , data);
+// });
+
+
+// fetchISSFlyOverTimes(coordinates, (error, data) => {
+//   if (error) {
+//     console.log("It didn't work! Error:" , error);
+//     return;
+//   }
+//   console.log('It worked! Returned Coordinate:' , data);
+// });
 
